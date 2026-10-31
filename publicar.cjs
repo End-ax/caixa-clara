@@ -22,6 +22,7 @@ const EXT_OK = new Set([
   '.html', '.css', '.js', '.cjs', '.mjs', '.json', '.md', '.py',
   '.svg', '.png', '.jpg', '.jpeg', '.webp', '.ico', '.txt', '.toml',
 ]);
+const NOMES_OK = new Set(['.gitignore', '.nvmrc', '.editorconfig']);
 
 if (!TOKEN) {
   console.error('GH_TOKEN ausente no ambiente.');
@@ -72,7 +73,7 @@ function listar(dir, base = '') {
     const rel = base ? `${base}/${nome}` : nome;
     const st = fs.statSync(abs);
     if (st.isDirectory()) saida.push(...listar(abs, rel));
-    else if (EXT_OK.has(path.extname(nome).toLowerCase()) && st.size < 900_000) {
+    else if ((EXT_OK.has(path.extname(nome).toLowerCase()) || NOMES_OK.has(nome)) && st.size < 900_000) {
       saida.push({ rel, abs });
     }
   }
